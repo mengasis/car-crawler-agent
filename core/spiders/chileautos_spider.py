@@ -1,6 +1,8 @@
 import re
 import logging
 import time
+import json
+import os
 from urllib.parse import urljoin
 import scrapy
 from scrapy.spiders import Spider
@@ -9,8 +11,9 @@ from ..items import CarItem
 class ChileautosSpider(Spider):
     name = 'chileautos'
     allowed_domains = ['chileautos.cl']
-    base_url = 'https://www.chileautos.cl/vehiculos/autos-vehículo/'
     items_per_page = 12
+    items_processed = 0
+    items_dropped = 0
     
     custom_settings = {
         'ROBOTSTXT_OBEY': False,
@@ -22,14 +25,51 @@ class ChileautosSpider(Spider):
     def __init__(self, *args, **kwargs):
         super(ChileautosSpider, self).__init__(*args, **kwargs)
         self._logger = logging.getLogger(__name__)
-        self.items_processed = 0
-        self.items_dropped = 0
         self.pages_processed = 0
         self.max_pages = int(kwargs.get('max_pages', 0))  # 0 means no limit
         self.processed_urls = set()  # URLs already tracked
+        
+        # Load filter configuration
+        self.filters = self.load_filters()
+        
+        # Build base URL with filters
+        self.base_url = self.build_base_url()
+        
+        # Apply max_pages from filters if not in arguments
+        if not self.max_pages and self.filters.get('max_pages'):
+            self.max_pages = self.filters['max_pages']
 
     def log(self, message, level=logging.INFO):
         self._logger.log(level, message)
+
+    def load_filters(self):
+        """Load filters from JSON file"""
+        filters_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'filters.json')
+        try:
+            with open(filters_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return data.get('filters', {})
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            self.log(f"Error loading filters: {str(e)}", level=logging.ERROR)
+            return {}
+
+    def build_base_url(self):
+        """Construct base URL with brand filters"""
+        base = 'https://www.chileautos.cl/vehiculos/'
+        
+        if not self.filters.get('brands'):
+            return base
+            
+        # Build brand query
+        brands = self.filters['brands']
+        if len(brands) == 1:
+            brand_query = f"Marca.{brands[0]}"
+        else:
+            brand_query = "(Or." + "._.".join(f"Marca.{brand}" for brand in brands) + ".)"
+        
+        query = f"?q=(And.Servicio.ChileAutos._.{brand_query})"
+        self.log(f"Constructed URL: {base + query}", level=logging.INFO)
+        return base + query
 
     def start_requests(self):
         """Start requests with pagination using URL offsets."""
@@ -39,7 +79,7 @@ class ChileautosSpider(Spider):
         
         # Start with first page (offset=0)
         yield scrapy.Request(
-            url=f"{self.base_url}?offset=0",
+            url=f"{self.base_url}&offset=0",
             callback=self.parse,
             meta={'page': 1}
         )
@@ -66,7 +106,7 @@ class ChileautosSpider(Spider):
 
         if not self.max_pages or current_page < self.max_pages:
             next_offset = current_page * self.items_per_page
-            next_url = f"{self.base_url}?offset={next_offset}"
+            next_url = f"{self.base_url}&offset={next_offset}"
             
             if next_url not in self.processed_urls:
                 self.processed_urls.add(next_url)

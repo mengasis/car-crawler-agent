@@ -1,7 +1,7 @@
 {
   "filters": {
     "max_pages": 1,
-    "brands": ["BYD"],
+    "brands": ["BYD", "BMW"],
     "models": [],
     "transmission": "",
     "min_year": null,
