@@ -1,0 +1,126 @@
+{
+    "vehicleTypes": {
+      "Autos": {
+        "categories": [
+          "SUV",
+          "Station Wagon", 
+          "Sedán",
+          "Hatchback",
+          "Citycar",
+          "Coupé",
+          "Convertible",
+          "Todo Terreno",
+          "Automóvil",
+          "Van",
+          "Furgón",
+          "Utilitario",
+          "Deportivo"
+        ],
+        "brands": {
+          "Abarth": [],
+          "Alfa Romeo": [],
+          "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "Q2", "Q3", "Q5", "Q7", "Q8", "RS3", "RS4", "RS5", "RS6", "S3", "S4", "S5", "TT"],
+          "BMW": ["116", "118", "120", "125", "130", "135", "218", "220", "225", "235", "316", "318", "320", "325", "328", "330", "335", "420", "428", "430", "435", "520", "523", "525", "528", "530", "535", "540", "M2", "M3", "M4", "M5", "X1", "X2", "X3", "X4", "X5", "X6", "Z4"],
+          "BYD": ["Dolphin", "Han", "Seal", "Song", "Tang", "Yuan"],
+          "Changan": ["CS15", "CS35", "CS55", "CS75", "CS85", "CS95", "Eado", "UNI-K", "UNI-T"],
+          "Chery": ["Arrizo 3", "Arrizo 5", "Fulwin", "QQ", "Tiggo 2", "Tiggo 3", "Tiggo 4", "Tiggo 5", "Tiggo 7", "Tiggo 8"],
+          "Chevrolet": ["Camaro", "Captiva", "Cavalier", "Corvette", "Cruze", "Malibu", "Montana", "Onix", "Orlando", "Prisma", "Sail", "Sonic", "Spark", "Spin", "Suburban", "Tahoe", "Tracker", "Trailblazer", "Traverse"],
+          "Citroën": ["Berlingo", "C3", "C3 Aircross", "C4", "C4 Cactus", "C4 Picasso", "C5", "C5 Aircross", "DS3", "DS4", "DS5", "DS7"],
+          "Fiat": ["124", "500", "500L", "500X", "Argo", "Bravo", "Cronos", "Doblo", "Ducato", "Fiorino", "Idea", "Linea", "Mobi", "Palio", "Panda", "Punto", "Qubo", "Siena", "Strada", "Tipo", "Toro", "Uno"],
+          "Ford": ["Bronco", "EcoSport", "Edge", "Escape", "Expedition", "Explorer", "F-150", "Fiesta", "Focus", "Fusion", "Ka", "Kuga", "Mondeo", "Mustang", "Ranger", "Territory", "Transit"],
+          "Honda": ["Accord", "City", "Civic", "CR-V", "Fit", "HR-V", "Insight", "Odyssey", "Pilot", "Ridgeline", "WR-V"],
+          "Hyundai": ["Accent", "Atos", "Azera", "Bayon", "Creta", "Elantra", "Genesis", "Grand i10", "H1", "HB20", "i10", "i20", "i30", "i35", "Ioniq", "ix35", "Kona", "Matrix", "Palisade", "Santa Fe", "Sonata", "Staria", "Terracan", "Tucson", "Veloster", "Venue", "Veracruz"],
+          "Kia": ["Carens", "Carnival", "Cerato", "Frontier", "K5", "Morning", "Niro", "Optima", "Picanto", "ProCeed", "Quoris", "Ray", "Rio", "Rondo", "Seltos", "Sonet", "Sorento", "Soul", "Sportage", "Stinger", "Stonic"],
+          "Mazda": ["2", "3", "3 Sport", "5", "6", "BT-50", "CX-3", "CX-30", "CX-5", "CX-7", "CX-8", "CX-9", "MX-30", "MX-5", "RX-8"],
+          "Mercedes-Benz": ["Clase A", "Clase B", "Clase C", "Clase E", "Clase G", "Clase S", "CLA", "CLS", "EQA", "EQB", "EQC", "EQE", "EQS", "GLA", "GLB", "GLC", "GLE", "GLK", "GLS", "ML", "SLK"],
+          "MG": ["3", "350", "5", "550", "6", "750", "HS", "Marvel R", "RX5", "ZS"],
+          "MINI": ["Clubman", "Cooper", "Countryman", "Paceman"],
+          "Mitsubishi": ["ASX", "Eclipse Cross", "Galant", "L200", "Lancer", "Mirage", "Montero", "Outlander", "Pajero"],
+          "Nissan": ["350Z", "370Z", "Altima", "Frontier", "GT-R", "Juke", "Kicks", "Leaf", "March", "Maxima", "Micra", "Murano", "Navara", "Note", "NP300", "Pathfinder", "Patrol", "Qashqai", "Sentra", "Skyline", "Terrano", "Tiida", "V16", "Versa", "X-Trail"],
+          "Peugeot": ["106", "107", "108", "2008", "206", "207", "208", "3008", "301", "307", "308", "4007", "4008", "406", "407", "408", "5008", "508", "Expert", "Partner", "RCZ", "Rifter", "Traveller"],
+          "Renault": ["Alaskan", "Captur", "Clio", "Duster", "Fluence", "Kadjar", "Kangoo", "Koleos", "Kwid", "Laguna", "Logan", "Master", "Megane", "Oroch", "Sandero", "Scala", "Scenic", "Symbol", "Trafic"],
+          "Subaru": ["BRZ", "Forester", "Impreza", "Legacy", "Outback", "WRX", "XV"],
+          "Suzuki": ["Alto", "Baleno", "Ciaz", "Dzire", "Ignis", "Jimny", "S-Cross", "Swift", "Vitara"],
+          "Toyota": ["4Runner", "86", "Avanza", "Camry", "Corolla", "Corolla Cross", "C-HR", "FJ Cruiser", "Fortuner", "Hiace", "Highlander", "Hilux", "Land Cruiser", "Prado", "Prius", "RAV4", "Rush", "Sequoia", "Sienna", "Supra", "Urban Cruiser", "Yaris"],
+          "Volkswagen": ["Amarok", "Arteon", "Beetle", "Bora", "Caddy", "California", "Caravelle", "CrossFox", "Crafter", "Fox", "Gol", "Golf", "ID.3", "ID.4", "ID.5", "Jetta", "Multivan", "Passat", "Polo", "Saveiro", "Scirocco", "Sharan", "T-Cross", "T-Roc", "Taos", "Tiguan", "Touareg", "Transporter", "Up!", "Vento", "Virtus"],
+          "Volvo": ["C30", "C70", "S40", "S60", "S80", "S90", "V40", "V50", "V60", "V70", "V90", "XC40", "XC60", "XC70", "XC90"]
+        }
+      },
+      "Camionetas": {
+        "categories": [
+          "Cabina Simple",
+          "Cabina Doble",
+          "Pick-up",
+          "4x2",
+          "4x4"
+        ],
+        "brands": {
+          "Chevrolet": ["Colorado", "D-Max", "Montana", "S10", "Silverado"],
+          "Dodge": ["Dakota", "RAM"],
+          "Ford": ["F-150", "Maverick", "Ranger", "Super Duty"],
+          "Great Wall": ["Poer", "Wingle"],
+          "Hyundai": ["Porter", "Santa Cruz"],
+          "JAC": ["T6", "T8"],
+          "Mahindra": ["Pik Up", "Scorpio"],
+          "Mazda": ["BT-50"],
+          "Mitsubishi": ["L200", "Triton"],
+          "Nissan": ["Frontier", "NP300", "Navara", "Titan"],
+          "RAM": ["1500", "2500", "3500"],
+          "Toyota": ["Hilux", "Tacoma", "Tundra"],
+          "Volkswagen": ["Amarok", "Saveiro"]
+        }
+      },
+      "Motos": {
+        "categories": [
+          "Sport",
+          "Naked",
+          "Trail",
+          "Touring",
+          "Scooter",
+          "Custom",
+          "Enduro",
+          "Cross"
+        ]
+      },
+      "Comerciales": {
+        "categories": [
+          "Furgón",
+          "Van",
+          "Minibus",
+          "Chasis"
+        ]
+      }
+    },
+    "transmissions": [
+      "Manual",
+      "Automática",
+      "Secuencial",
+      "CVT",
+      "DSG"
+    ],
+    "fuelTypes": [
+      "Bencina",
+      "Diesel",
+      "Eléctrico",
+      "Híbrido",
+      "Gas",
+      "Híbrido Plug-in"
+    ],
+    "conditions": [
+      "Nuevo",
+      "Usado",
+      "Seminuevo"
+    ],
+    "doors": [
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "owners": [
+      "Primer dueño",
+      "Segundo dueño",
+      "Tercer dueño o más"
+    ]
+}  

@@ -1,11 +1,4 @@
-# Scrapy settings for core project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://docs.scrapy.org/en/latest/topics/settings.html
-#     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from core.logger import configure_logger
 
 BOT_NAME = "core"
 
@@ -92,10 +85,11 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
-# Logging configuration
-LOG_LEVEL = 'INFO'
-LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
-LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
+configure_logger()
+
+# Configuración de Scrapy para usar nuestro logger
+LOG_ENABLED = True
+LOG_LEVEL = 'DEBUG'
 
 # Enable logging to file (optional, uncomment to use)
 # LOG_FILE = 'scraper.log'

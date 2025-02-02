@@ -1,0 +1,18 @@
+{
+  "filters": {
+    "max_pages": 1,
+    "brands": ["BYD"],
+    "models": [],
+    "transmission": "",
+    "min_year": null,
+    "max_year": null,
+    "min_km": null,
+    "max_km": null,
+    "min_price": null,
+    "max_price": null,
+    "fuel_type": "",
+    "condition": "",
+    "doors": null,
+    "owners": ""
+  }
+}
