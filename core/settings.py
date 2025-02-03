@@ -88,7 +88,7 @@ FEED_EXPORT_ENCODING = "utf-8"
 configure_logger()
 
 # Configuración de Scrapy para usar nuestro logger
-LOG_ENABLED = True
+LOG_ENABLED = False
 LOG_LEVEL = 'DEBUG'
 
 # Enable logging to file (optional, uncomment to use)

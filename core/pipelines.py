@@ -12,6 +12,8 @@ from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError, PyMongoError
 from scrapy.exceptions import DropItem
 from itemadapter import ItemAdapter
+import json
+from pprint import pformat
 
 # Load environment variables
 load_dotenv()
@@ -35,7 +37,7 @@ class MongoDBPipeline:
         self.items_processed = 0
         self.items_dropped = 0
         self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.DEBUG)
 
     def check_connection(self):
         """Test MongoDB connection and database access."""
@@ -84,46 +86,28 @@ class MongoDBPipeline:
             self.logger.info(f"Success rate: {success_rate:.1f}%")
 
     def process_item(self, item, spider):
-        """Process and validate item before storing."""
-        self.logger.debug(f"Processing item: {item}")
+        """Process and store item in MongoDB."""
         adapter = ItemAdapter(item)
-        
-        # Validate required fields
-        if not adapter.get('title'):
-            self.items_dropped += 1
-            raise DropItem(f"Item dropped - missing title: {item}")
-            
-        # Validate price
-        price = adapter.get('price', 0)
-        if not price or price <= 0:
-            self.items_dropped += 1
-            raise DropItem(f"Item dropped - invalid price: {item}")
-            
-        # Validate mileage
-        mileage = adapter.get('mileage', 0)
-        if not mileage or mileage <= 0:
-            self.items_dropped += 1
-            raise DropItem(f"Item dropped - invalid mileage: {item}")
-            
-        # Validate URL
-        if not adapter.get('url'):
-            self.items_dropped += 1
-            raise DropItem(f"Item dropped - missing URL: {item}")
         
         try:
             # Verify connection is still alive before inserting
             self.client.server_info()
-            
+
+            dict = adapter.asdict()
+            self.logger.info("🚀 *** Processing item *** 🚀")
+            self.logger.info(dict)
+
             # Insert into MongoDB
-            self.db[self.collection_name].insert_one(adapter.asdict())
+            self.db[self.collection_name].insert_one(dict)
             self.items_processed += 1
-            self.logger.info(f"Successfully stored car: {adapter.get('title')}")
-            self.logger.info(f"Details: Price=${price:,.0f}, {mileage:,}km, Year {adapter.get('year')}")
+            self.logger.info("Stored car in MongoDB successfully!")
             return item
+            
         except ServerSelectionTimeoutError as e:
             self.items_dropped += 1
             self.logger.error(f"MongoDB connection lost: {str(e)}")
             raise MongoDBConnectionError(f"Lost connection to MongoDB: {str(e)}")
+            
         except PyMongoError as e:
             self.items_dropped += 1
             self.logger.error(f"Failed to store item in MongoDB: {str(e)}")
