@@ -4,6 +4,11 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
+import time
+from http.cookiejar import CookieJar
+from scrapy.http import Request
+from scrapy.exceptions import IgnoreRequest
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -54,6 +59,70 @@ class CoreSpiderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+
+class RotateUserAgentMiddleware:
+    user_agents = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0'
+    ]
+
+    def process_request(self, request, spider):
+        request.headers['User-Agent'] = random.choice(self.user_agents)
+
+
+class SessionMiddleware:
+    def __init__(self, settings):
+        self.session_enabled = settings.getbool('SESSION_ENABLED', True)
+        self.session_duration = settings.getint('SESSION_DURATION', 3600)
+        self.cookie_jar = CookieJar()
+        self.session_start_time = time.time()
+        self.requests_count = 0
+        self.max_requests_per_session = 100
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings)
+
+    def process_request(self, request, spider):
+        if not self.session_enabled:
+            return None
+
+        # Check if we need to renew the session
+        current_time = time.time()
+        if (current_time - self.session_start_time > self.session_duration or 
+            self.requests_count >= self.max_requests_per_session):
+            self._reset_session()
+
+        # Add current session cookies
+        self.cookie_jar.add_cookie_header(request)
+        self.requests_count += 1
+
+        # Add additional random delay
+        time.sleep(random.uniform(1, 3))
+        return None
+
+    def process_response(self, request, response, spider):
+        if self.session_enabled:
+            # Extract and save cookies from the response
+            self.cookie_jar.extract_cookies(response, request)
+            
+            # If we detect a captcha or blocking, renew session
+            if response.status in [403, 429] or 'captcha' in response.text.lower():
+                spider.logger.warning(f"Detected blocking at URL: {request.url}. Renewing session...")
+                self._reset_session()
+                # Retry the request
+                return request.replace(dont_filter=True)
+        return response
+
+    def _reset_session(self):
+        self.cookie_jar.clear()
+        self.session_start_time = time.time()
+        self.requests_count = 0
 
 
 class CoreDownloaderMiddleware:

@@ -11,13 +11,6 @@ from .item_parser import ItemParser
 class ChileautosSpider(Spider):
     name = 'chileautos'
     allowed_domains = ['chileautos.cl']
-    
-    custom_settings = {
-        'ROBOTSTXT_OBEY': False,
-        'DOWNLOAD_DELAY': 2,
-        'COOKIES_ENABLED': True,
-        'USER_AGENT': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
